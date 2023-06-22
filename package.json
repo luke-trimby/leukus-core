@@ -1,0 +1,32 @@
+{
+  "name": "leukus-core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --ext .ts --ignore-path .gitignore .",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "enhance-log": "^1.0.7",
+    "gsap": "^3.12.1",
+    "pixi.js": "^7.2.4",
+    "signals": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/signals": "^1.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
+    "@typescript-eslint/parser": "^5.60.0",
+    "eslint": "^8.43.0",
+    "eslint-config-prettier": "^8.8.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "prettier": "2.8.8"
+  }
+}
