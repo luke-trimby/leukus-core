@@ -9,7 +9,7 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
+    "./src/**/*": "prettier --write --ignore-unknown"
   },
   "author": "",
   "license": "ISC",
