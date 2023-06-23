@@ -1,11 +1,10 @@
 import * as PIXI from 'pixi.js';
-import { Log } from 'enhance-log';
-import { Size } from '../../global/size';
-import { AbstractService } from '../abstract-service';
-import { ICanvasConfig } from '../../global/interface/canvas-config';
+import {Log} from 'enhance-log';
+import {Size} from '../../global/size';
+import {AbstractService} from '../abstract-service';
+import {ICanvasConfig} from '../../global/interface/canvas-config';
 
 export class CanvasService extends AbstractService {
-
   private pixiApplication: PIXI.Application<HTMLCanvasElement>;
   private canvasOptions: ICanvasConfig;
   private canvasContainer: HTMLDivElement;
@@ -23,12 +22,14 @@ export class CanvasService extends AbstractService {
     Log.d(`[CanvasService] Initialising with options`, this.canvasOptions);
     this.size = this.canvasOptions.size;
     this.ratio = this.size.width / this.size.height;
-    this.htmlLayerContainerDiv = document.getElementById(this.canvasOptions.htmlTargetId) as HTMLDivElement;
+    this.htmlLayerContainerDiv = document.getElementById(
+      this.canvasOptions.htmlTargetId
+    ) as HTMLDivElement;
 
     const pixiOptions: Partial<PIXI.IApplicationOptions> = {
       width: this.canvasOptions.size.width,
       height: this.canvasOptions.size.height,
-      backgroundColor: this.canvasOptions.canvasColor
+      backgroundColor: this.canvasOptions.canvasColor,
     };
     this.pixiApplication = new PIXI.Application(pixiOptions);
 
@@ -43,20 +44,29 @@ export class CanvasService extends AbstractService {
     return this.pixiApplication.renderer;
   }
 
-  public registerForUpdates(updateFunc: (...params: unknown[]) => unknown, context: unknown, priority?: PIXI.UPDATE_PRIORITY): void {
+  public registerForUpdates(
+    updateFunc: (...params: unknown[]) => unknown,
+    context: unknown,
+    priority?: PIXI.UPDATE_PRIORITY
+  ): void {
     if (this.pixiApplication.ticker?.started) {
       this.pixiApplication.ticker.add(updateFunc, context, priority);
     }
   }
 
-  public deRegisterFromUpdates(updateFunc: (...params: unknown[]) => unknown, context: unknown): void {
+  public deRegisterFromUpdates(
+    updateFunc: (...params: unknown[]) => unknown,
+    context: unknown
+  ): void {
     if (this.pixiApplication.ticker?.started) {
       this.pixiApplication.ticker.remove(updateFunc, context);
     }
   }
 
   private injectCanvas(win: Window = window) {
-    this.canvasContainer = document.getElementById(this.canvasOptions.canvasTargetId) as HTMLDivElement;
+    this.canvasContainer = document.getElementById(
+      this.canvasOptions.canvasTargetId
+    ) as HTMLDivElement;
     if (this.canvasContainer) {
       this.canvasContainer.appendChild(this.pixiApplication.view);
 
@@ -83,13 +93,19 @@ export class CanvasService extends AbstractService {
     this.pixiApplication.renderer.view.style.height = size.height + 'px';
     this.pixiApplication.renderer.view.style.width = size.width + 'px';
     if (this.canvasOptions.centered) {
-        this.pixiApplication.renderer.view.style.marginLeft = (currentWindow.innerWidth - size.width) / 2 + 'px';
+      this.pixiApplication.renderer.view.style.marginLeft =
+        (currentWindow.innerWidth - size.width) / 2 + 'px';
     }
-    this.scale = new Size(size.width / this.size.width, size.height / this.size.height);
+    this.scale = new Size(
+      size.width / this.size.width,
+      size.height / this.size.height
+    );
     this.htmlLayerContainerDiv.style.width = this.size.width + 'px';
     this.htmlLayerContainerDiv.style.height = this.size.height + 'px';
-    this.htmlLayerContainerDiv.style.transform = 'scale(' + this.scale.width + ', ' + this.scale.height + ')';
+    this.htmlLayerContainerDiv.style.transform =
+      'scale(' + this.scale.width + ', ' + this.scale.height + ')';
     this.htmlLayerContainerDiv.style.transformOrigin = 'center top';
-    this.htmlLayerContainerDiv.style.left = (currentWindow.innerWidth - this.size.width) / 2 + 'px';
+    this.htmlLayerContainerDiv.style.left =
+      (currentWindow.innerWidth - this.size.width) / 2 + 'px';
   }
 }

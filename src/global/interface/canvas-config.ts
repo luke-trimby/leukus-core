@@ -1,4 +1,4 @@
-import { Size } from '../size';
+import {Size} from '../size';
 
 export interface ICanvasConfig {
   size: Size;

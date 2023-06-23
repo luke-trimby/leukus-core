@@ -1,8 +1,8 @@
-import { Log } from 'enhance-log';
-import { Decision } from './decision';
-import { StateTransition } from './state-transition';
-import { State } from './state';
-import { AbstractService } from '../abstract-service';
+import {Log} from 'enhance-log';
+import {Decision} from './decision';
+import {StateTransition} from './state-transition';
+import {State} from './state';
+import {AbstractService} from '../abstract-service';
 
 export class StateMachineService extends AbstractService {
   protected states: Map<string, State>;
@@ -20,7 +20,7 @@ export class StateMachineService extends AbstractService {
 
   public start(): void {
     if (!this.started) {
-      Log.d(`[StateMachineService] Starting`,this.states);
+      Log.d(`[StateMachineService] Starting`, this.states);
       this.states.forEach((state: State) => {
         if (state.isInit) {
           Log.i(`[StateMachineService] init state = '${state.name}'`);
@@ -39,22 +39,27 @@ export class StateMachineService extends AbstractService {
   }
 
   public complete(): void {
-    this.currentState.onExit().then(
-      () => {
-        const transition: StateTransition = this.transitions.get(this.currentState.name);
-        if (transition) {
-          if (this.decisions.has(transition.to)) {
-            this.resolveDecision(this.decisions.get(transition.to));
-          } else if (this.states.has(transition.to)) {
-            this.currentState = this.states.get(transition.to);
-            Log.i(`[StateMachineService] '${transition.from}' -> '${transition.to}'`);
-            this.currentState.onEnter();
-          }
-        } else {
-          Log.e(`[StateMachineService] Couldn't find a transition from state:`, this.currentState.name);
+    this.currentState.onExit().then(() => {
+      const transition: StateTransition = this.transitions.get(
+        this.currentState.name
+      );
+      if (transition) {
+        if (this.decisions.has(transition.to)) {
+          this.resolveDecision(this.decisions.get(transition.to));
+        } else if (this.states.has(transition.to)) {
+          this.currentState = this.states.get(transition.to);
+          Log.i(
+            `[StateMachineService] '${transition.from}' -> '${transition.to}'`
+          );
+          this.currentState.onEnter();
         }
+      } else {
+        Log.e(
+          `[StateMachineService] Couldn't find a transition from state:`,
+          this.currentState.name
+        );
       }
-    );
+    });
   }
 
   public addState(state: State): StateMachineService {
@@ -82,7 +87,9 @@ export class StateMachineService extends AbstractService {
 
   protected resolveDecision(decision: Decision): void {
     const nextName: string = decision.evaluate();
-    Log.i(`[StateMachineService] Resolved decision '${decision.name}' -> '${nextName}'`);
+    Log.i(
+      `[StateMachineService] Resolved decision '${decision.name}' -> '${nextName}'`
+    );
     if (this.decisions.has(nextName)) {
       this.resolveDecision(this.decisions.get(nextName));
     } else if (this.states.has(nextName)) {

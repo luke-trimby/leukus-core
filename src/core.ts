@@ -1,16 +1,14 @@
-import { Log } from 'enhance-log';
-import { Components } from './components/components';
-import { Services } from './services/services';
-import { CoreSetup } from './setup/core-setup';
-import { PreloaderService } from './services/preloader/preloader-service';
-import { StateMachineService } from './services/state/state-machine-service';
+import {Log} from 'enhance-log';
+import {Components} from './components/components';
+import {Services} from './services/services';
+import {CoreSetup} from './setup/core-setup';
+import {PreloaderService} from './services/preloader/preloader-service';
+import {StateMachineService} from './services/state/state-machine-service';
 
 export class Core {
-
   protected setupClasses: CoreSetup[];
 
   public init(...setupClasses: CoreSetup[]): void {
-
     this.setupClasses = setupClasses;
     this.initServices();
     this.initLayers();
@@ -22,7 +20,9 @@ export class Core {
     this.initDebug();
     /// #endif
 
-    Services.get(PreloaderService)?.onAllStagesLoaded.addOnce(() => Services.get(StateMachineService).start());
+    Services.get(PreloaderService)?.onAllStagesLoaded.addOnce(() =>
+      Services.get(StateMachineService).start()
+    );
   }
 
   protected initServices(): void {

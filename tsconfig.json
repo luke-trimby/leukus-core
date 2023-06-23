@@ -8,10 +8,6 @@
     "moduleResolution": "nodenext",
     "paths": {}
   },
-  "files": [
-    "src/core.ts"
-  ],
-  "include": [
-    "src/**/*"
-  ]
+  "files": ["src/core.ts"],
+  "include": ["src/**/*"]
 }
